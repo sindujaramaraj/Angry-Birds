@@ -121,7 +121,7 @@ function PlainProjectileMovement() {
 }
 
 //object that needs to move in a projectile line
-PlainProjectileMovement.project = function(object, force) {
+PlainProjectileMovement.moveInPath = function(object, force) {
     //calculate current position
 }
 
