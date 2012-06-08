@@ -21,6 +21,26 @@ body {
     float: left;
 }
 
+#slingfront {
+    background: url(../images/SLINGSHOT_FRONT.png) no-repeat;
+    height: 125px;
+    width: 40px;
+    position: absolute;
+    left: 67px;
+    bottom: 82px;
+    z-index: 2;
+}
+
+#slingback {
+    background: url(../images/SLINGSHOT_BACK.png) no-repeat;
+    height: 200px;
+    width: 40px;
+    position: absolute;
+    left: 95px;
+    bottom: 0px;
+    z-index: 0;
+}
+
 #pigstock {
     width: 400px;
     height: 100%;
@@ -60,6 +80,7 @@ body {
 .bird {
     background-image: url(../images/BIRDS.png);
     display: inline-block;
+    position: absolute;
 }
 .redbird {
     height: 50px;
@@ -68,4 +89,7 @@ body {
 
 .redbird.rest {
     background-position: 51px 465px;
+    z-index: 1;
+    left: 78px;
+    bottom: 139px;
 }

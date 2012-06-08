@@ -10,10 +10,10 @@
         init: function(playArea, pigType) {
             this._playArea = playArea;
             this._pigType = pigType;
-            this.createBirds([{type: "redbird", state: "rest"}]);
-            this.createPigs();
+            this._createBirds([{type: "redbird", state: "rest", event: "pull"}]);
+            this._createPigs();
         },
-        createBirds: function(birdTypes) {
+        _createBirds: function(birdTypes) {
             this._birds = [];
             var bird = null;
             var birdsstand = document.getElementById("birdsstand");
@@ -23,13 +23,13 @@
                 bird.render(birdsstand);
             }
         },
-        createPigs: function() {
+        _createPigs: function() {
             this._pigs = [];
             var pig = null;
             var pigsContainer = document.getElementById("pigstock");
             var aWidth = pigsContainer.offsetWidth;
             var aHeight = pigsContainer.offsetHeight;
-            var count = this.calculatePigCountByPigType(aWidth, aHeight);
+            var count = this._calculatePigCountByPigType(aWidth, aHeight);
             var idx = 0;
             while (idx < count) {
                 pig = new Pig(this._pigType);
@@ -47,7 +47,7 @@
                 }
             }, 500);
         },
-        calculatePigCountByPigType: function(width, height) {
+        _calculatePigCountByPigType: function(width, height) {
             var dim;
             switch(this._pigType) {
                 case "pig1":
@@ -97,22 +97,77 @@
     };
 
 
-    function Bird(type, state) {
+    function Bird(type, state, action) {
         this._type = type;
         this._state = state;
+        this._action = action;
     }
 
-    Bird.prototype= {
-        render: function(parent) {
-            var birdDiv = document.createElement("div");
-            birdDiv.className = "bird " + this._type + " " + this._state;
-            parent.appendChild(birdDiv);
-            this._element = birdDiv;
-        },
-        changeState: function() {
+    (function() {
+        Bird.prototype= {
+            render: function(parent) {
+                var birdDiv = document.createElement("div");
+                birdDiv.className = "bird " + this._type + " " + this._state;
+                parent.appendChild(birdDiv);
+                birdDiv.addEventListener("click", clickOnBird(this));
+                birdDiv.addEventListener("drag", pullString(this));
+                birdDiv.addEventListener("drop", releaseString(this));
+                this._element = birdDiv;
+            },
+            changeState: function() {
 
+            },
+            handleClick: function(event) {
+                switch (this._action) {
+                    case "pull":
+                        this._state = "readyToPull";
+                        break;
+                }
+                console.log(this._state);
+            },
+            handlePullFromString: function(event) {
+                if (this._state == "readyToPull") {
+                    this._state = "pulled";
+                }
+                if (this._state == "pulled") {
+                    applyStyle(this._element, {
+
+                    });
+                }
+                console.log(this._state);
+            },
+            handleStringRelease: function(event) {
+                if (this._state == "pulled") {
+                    //project the bird by using projectile formulas
+                }
+                console.log(this._state);
+            }
+        };
+
+        function clickOnBird(instance) {
+            return function(event) {
+                instance.handleClick(event);
+            }
         }
-    };
+
+        function pullString(instance) {
+            return function(event) {
+                instance.handlePullFromString(event);
+            }
+        }
+
+        function releaseString(instance) {
+            return function(event) {
+                instance.handleStringRelease();
+            }
+        }
+    })();
+
+    function applyStyle(element, styles) {
+        for (var style in styles) {
+            element.style[style] = styles[style];
+        }
+    }
 
     window.AngryBirds = new AngryBirds();
 })();
