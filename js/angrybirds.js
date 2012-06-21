@@ -1,14 +1,17 @@
 /**
  *
  */
-
 (function() {
+    var container = null;
+    var startBirdPull = false;
+    var stringLength = 100;
+    var projectile = new Projectile();
 
     function AngryBirds() {}
 
     AngryBirds.prototype = {
         init: function(playArea, pigType) {
-            this._playArea = playArea;
+            container = playArea;
             this._pigType = pigType;
             this._createBirds([{type: "redbird", state: "rest", event: "pull"}]);
             this._createPigs();
@@ -73,34 +76,34 @@
         this._state = "eyes_closed";
     }
 
-    Pig.prototype = {
-        render: function(parent) {
-            var pigDiv = document.createElement("div");
-            pigDiv.className = this._type + " " + this._state;
-            parent.appendChild(pigDiv);
-            this._element = pigDiv;
-        },
-        changeState: function(newState) {
-            if (!newState) {
-                switch(this._state) {
-                    case "eyes_closed":
-                        newState = "eyes_opened";
-                        break;
-                    case "eyes_opened":
-                        newState = "eyes_closed";
-                        break;
+    (function () {
+        Pig.prototype = {
+            render: function(parent) {
+                var pigDiv = document.createElement("div");
+                pigDiv.className = this._type + " " + this._state;
+                parent.appendChild(pigDiv);
+                this._element = pigDiv;
+            },
+            changeState: function(newState) {
+                if (!newState) {
+                    switch(this._state) {
+                        case "eyes_closed":
+                            newState = "eyes_opened";
+                            break;
+                        case "eyes_opened":
+                            newState = "eyes_closed";
+                            break;
+                    }
                 }
+                this._state = newState;
+                this._element.className = this._type + " " + this._state;
             }
-            this._state = newState;
-            this._element.className = this._type + " " + this._state;
-        }
-    };
+        };
+    })();
 
-
-    function Bird(type, state, action) {
+    function Bird(type, state) {
         this._type = type;
         this._state = state;
-        this._action = action;
     }
 
     (function() {
@@ -109,18 +112,23 @@
                 var birdDiv = document.createElement("div");
                 birdDiv.className = "bird " + this._type + " " + this._state;
                 parent.appendChild(birdDiv);
-                birdDiv.addEventListener("click", clickOnBird(this));
-                birdDiv.addEventListener("drag", pullString(this));
-                birdDiv.addEventListener("drop", releaseString(this));
+                birdDiv.addEventListener("mousedown", clickOnBird(this));
                 this._element = birdDiv;
             },
             changeState: function() {
 
             },
             handleClick: function(event) {
-                switch (this._action) {
-                    case "pull":
+                switch (this._state) {
+                    case "rest":
                         this._state = "readyToPull";
+                        startBirdPull = true;
+                        this._pullStringListener = pullString(this);
+                        container.addEventListener("mousemove", this._pullStringListener);
+                        this._stopBirdPullListener = stopBirdPull(this);
+                        container.addEventListener("mouseup", this._stopBirdPullListener);
+                        this._origX = event.x;
+                        this._origY = event.y;
                         break;
                 }
                 console.log(this._state);
@@ -130,8 +138,15 @@
                     this._state = "pulled";
                 }
                 if (this._state == "pulled") {
+                    //check if the distance is more than the length of string
+                    var d = Math.abs(distanceBetween2Points(event.clientX, this._origX, event.clientY, this._origY));
+                    if (d > stringLength) {
+                        console.log(d);
+                        return;
+                    }
                     applyStyle(this._element, {
-
+                        left: event.x - container.offsetLeft + "px",
+                        top: event.y  - container.offsetTop + "px"
                     });
                 }
                 console.log(this._state);
@@ -139,6 +154,10 @@
             handleStringRelease: function(event) {
                 if (this._state == "pulled") {
                     //project the bird by using projectile formulas
+                    startBirdPull = false;
+                    container.removeEventListener("mousemove", this._pullStringListener);
+                    container.removeEventListener("mouseup", this._stopBirdPullListener);
+                    projectile.project(this._element, this._element.offsetTop, 2, 5);
                 }
                 console.log(this._state);
             }
@@ -156,27 +175,20 @@
             }
         }
 
-        function releaseString(instance) {
+        function stopBirdPull(instance) {
             return function(event) {
-                instance.handleStringRelease();
+                startBirdPull = false;
+                instance.handleStringRelease(event);
             }
         }
+
     })();
 
-    function applyStyle(element, styles) {
-        for (var style in styles) {
-            element.style[style] = styles[style];
-        }
+    function distanceBetween2Points(x1, x2, y1, y2) {
+        var temp = Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2);
+        return Math.pow(temp, 0.5);
     }
 
     window.AngryBirds = new AngryBirds();
 })();
-
-function PlainProjectileMovement() {
-}
-
-//object that needs to move in a projectile line
-PlainProjectileMovement.project = function(object, force) {
-    //calculate current position
-}
 
