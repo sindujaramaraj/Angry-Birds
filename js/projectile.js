@@ -7,8 +7,8 @@ function Projectile() {
     var g = 9.81;
 
     Projectile.prototype = {
-        project: function(object, initialHeight, projectionAngle, velocity) {
-            project(object, initialHeight, projectionAngle, velocity);
+        project: function(object, initialHeight, projectionAngle, velocity, containerOffset) {
+            project(object, initialHeight, projectionAngle, velocity, containerOffset);
         },
         /**
          * Find the height of projectile at a particular distance
@@ -36,7 +36,7 @@ function Projectile() {
         return maxDistance;
     }
 
-    function project(htmlObj, initialHeight, projectionAngle, velocity) {
+    function project(htmlObj, initialHeight, projectionAngle, velocity, containerOffset) {
         var xValue = 1;
         // var initialHeight = 1;
         initialHeight = pixelToMeter(initialHeight);
@@ -49,7 +49,7 @@ function Projectile() {
         function projectContinuously() {
             var height = getHeightAtX(pixelToMeter(xValue), initialHeight, projectionAngle, velocity);
             applyStyle(htmlObj, {
-                top: (initialY + meterToPixel(height)) + "px",
+                top: (containerOffset - meterToPixel(height)) + "px",
                 left: (initialX + xValue) + "px"
             });
             xValue++;
