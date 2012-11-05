@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Jing Angry Birds</title>
+        <link type="text/css" rel="stylesheet" href="css/angrybirds.css" />
+    </head>
+    <body>
+        <div id="container">
+            <div id="buttonsContainer">
+
+            </div>
+            <div id="scorecard">
+
+            </div>
+            <div id="playground">
+                <div id="pigstock"></div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="js/angrybirds.js"></script>
+    <script type="text/javascript">
+        window.AngryBirds.init(document.getElementById("playground"), "pig2");
+    </script>
+</html>

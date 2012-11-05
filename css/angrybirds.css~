@@ -1,0 +1,71 @@
+body {
+    overflow: hidden;
+}
+
+#container {
+    margin: auto;
+    width: 980px;
+}
+
+#playground {
+    height: 500px;
+    width: 980px;
+    position: absolute;
+    border: 1px solid black;
+    margin: auto;
+}
+
+#birdsstand {
+    width: 100px;
+    height: 100%;
+    float: left;
+}
+
+#pigstock {
+    width: 400px;
+    height: 100%;
+    float: right;
+}
+
+/* from small to big */
+.pig1, .pig2, .pig3, .pig4 {
+    background-image: url(../images/PIGS.png);
+    display: inline-block;
+}
+
+.pig1 {
+}
+
+.pig2 {
+    height: 80px;
+    width: 80px;
+}
+
+.pig2.eyes_closed {
+    background-position: -658px -540px;
+}
+
+.pig2.eyes_opened {
+    background-position: -741px -540px;
+}
+
+.pig3 {
+
+}
+
+.pig4 {
+
+}
+
+.bird {
+    background-image: url(../images/BIRDS.png);
+    display: inline-block;
+}
+.redbird {
+    height: 250px;
+    width: 250px;
+}
+
+.redbird.rest {
+    background-position: 51px 465px;
+}

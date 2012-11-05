@@ -1,0 +1,95 @@
+body {
+    overflow: hidden;
+}
+
+#container {
+    margin: auto;
+    width: 980px;
+}
+
+#playground {
+    height: 500px;
+    width: 980px;
+    position: absolute;
+    border: 1px solid black;
+    margin: auto;
+}
+
+#birdsstand {
+    width: 100px;
+    height: 100%;
+    float: left;
+}
+
+#slingfront {
+    background: url(../images/SLINGSHOT_FRONT.png) no-repeat;
+    height: 125px;
+    width: 40px;
+    position: absolute;
+    left: 67px;
+    bottom: 82px;
+    z-index: 2;
+}
+
+#slingback {
+    background: url(../images/SLINGSHOT_BACK.png) no-repeat;
+    height: 200px;
+    width: 40px;
+    position: absolute;
+    left: 95px;
+    bottom: 0px;
+    z-index: 0;
+}
+
+#pigstock {
+    width: 400px;
+    height: 100%;
+    float: right;
+}
+
+/* from small to big */
+.pig1, .pig2, .pig3, .pig4 {
+    background-image: url(../images/PIGS.png);
+    display: inline-block;
+}
+
+.pig1 {
+}
+
+.pig2 {
+    height: 80px;
+    width: 80px;
+}
+
+.pig2.eyes_closed {
+    background-position: -658px -540px;
+}
+
+.pig2.eyes_opened {
+    background-position: -741px -540px;
+}
+
+.pig3 {
+
+}
+
+.pig4 {
+
+}
+
+.bird {
+    background-image: url(../images/BIRDS.png);
+    display: inline-block;
+    position: absolute;
+}
+.redbird {
+    height: 50px;
+    width: 50px;
+}
+
+.redbird.rest {
+    background-position: 51px 465px;
+    z-index: 1;
+    left: 78px;
+    bottom: 139px;
+}
