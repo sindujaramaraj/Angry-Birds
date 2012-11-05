@@ -157,7 +157,7 @@
                     startBirdPull = false;
                     container.removeEventListener("mousemove", this._pullStringListener);
                     container.removeEventListener("mouseup", this._stopBirdPullListener);
-                    projectile.project(this._element, this._element.offsetTop, 2, 5);
+                    projectile.project(this._element, container.offsetTop + container.offsetHeight - this._element.offsetTop, 50, 5);
                 }
                 console.log(this._state);
             }
