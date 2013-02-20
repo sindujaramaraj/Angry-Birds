@@ -114,6 +114,7 @@
                 parent.appendChild(birdDiv);
                 birdDiv.addEventListener("mousedown", clickOnBird(this));
                 this._element = birdDiv;
+                this._initPosX = this._element.offsetLeft;
             },
             changeState: function() {
 
@@ -158,11 +159,17 @@
                     container.removeEventListener("mousemove", this._pullStringListener);
                     container.removeEventListener("mouseup", this._stopBirdPullListener);
                     var containerOffset = container.offsetTop + container.offsetHeight;
-                    projectile.project(this._element, containerOffset - this._element.offsetTop, 50, 30, containerOffset);
+                    projectile.project(this._element, containerOffset - this._element.offsetTop, 50, getVelocity(this._initPosX - this._element.offsetLeft), containerOffset);
                 }
                 console.log(this._state);
             }
         };
+
+        //velocity increases as the distance increases
+        //maximum velocity is 80
+        function getVelocity(d) {
+            return d < 80 ? (d < 0 ? 30 : d) : 80;
+        }
 
         function clickOnBird(instance) {
             return function(event) {
